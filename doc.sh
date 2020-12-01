@@ -63,6 +63,9 @@ then
    for (( i=0; i<$computeNumber; i=i+1 )); do
       echo ${computeName[$i]} ${computeCore[$i]} >> out.txt
    done
+   dd if=/dev/urandom bs=1 count=1024 >/etc/munge/munge.key
+   chmod 400 /etc/munge/munge.key
+   chown munge.munge /etc/munge/munge.key
    cp -r /home/slurm-19.05.0/etc/ /opt/slurm/etc/
    chown -R slurm:slurm /opt/slurm/etc
    cp /opt/slurm/etc/slurm.conf.example /opt/slurm/etc/slurm.conf 
