@@ -284,5 +284,4 @@ systemctl enable rc-local
 echo "export PATH=/opt/slurm/bin:\$PATH" >> /etc/profile
 echo "source /etc/profile" >>  ~/.bashrc
 source ~/.bashrc
-echo "开始重启........"
-reboot 
+echo "等待重启........"
