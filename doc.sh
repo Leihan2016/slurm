@@ -63,6 +63,9 @@ then
    for (( i=0; i<$computeNumber; i=i+1 )); do
       echo ${computeName[$i]} ${computeCore[$i]} >> out.txt
    done
+   cp -r /home/slurm-19.05.0/etc/ /opt/slurm/etc/
+   chown -R slurm:slurm /opt/slurm/etc
+   cp /opt/slurm/etc/slurm.conf.example /opt/slurm/etc/slurm.conf 
    rm /opt/slurm/etc/slurm.conf
    touch /opt/slurm/etc/slurm.conf
    echo "# Example slurm.conf file. Please run configurator.html
