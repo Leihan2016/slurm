@@ -230,13 +230,14 @@ else
    apt-get install nfs-common -y
    mkdir -p /home/share
 #   read -p "输入挂载NFS服务端IP(192.168.1.?):" server_ip
-   mount $serverIP:/home/share /home/share
+   mount $serverIP:/home/share/ /home/share
 #   /opt/slurm/sbin/slurmd -c
    echo "#!/bin/bash
 #启动munge
 /etc/init.d/munge start
 #启动控制节点slurm
 /opt/slurm/sbin/slurmd -c
+mount $serverIP:/home/share/ /home/share
 " >> /etc/slurmstart.sh
 fi
 echo "#!/bin/sh -e
