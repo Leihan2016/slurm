@@ -57,8 +57,7 @@ then
        echo "$IP_node	$name" >> /etc/hosts
        computeName[$i]=$name
        computeCore[$i]=$core
-       echo ${computeName[$i]} 
-       echo ${computeCore[$i]} 
+       echo "节点名称:${computeName[$i]}  节点核心数:${computeCore[$i]}" 
    done
     
    for (( i=0; i<$computeNumber; i=i+1 )); do
@@ -166,12 +165,12 @@ JobCompType=jobcomp/none
 #PartitionName=control Nodes=control Default=Yes MaxTime=INFINITE State=UP
 #PartitionName=compute Nodes=node1,control Default=Yes MaxTime=INFINITE State=UP
 " >> /opt/slurm/etc/slurm.conf
-   echo "NodeName=$serverName Procs=$serverCore State=IDLE Weight=1" >> /opt/slurm/etc/slurm.conf
+   echo "NodeName=$serverName Procs=$serverCore State=IDLE Weight=2" >> /opt/slurm/etc/slurm.conf
    for (( i=0; i<$computeNumber; i=i+1 )); do
       echo "NodeName=${computeName[$i]} Procs=${computeCore[$i]} State=IDLE Weight=1" >> /opt/slurm/etc/slurm.conf
    done
 
-   echo "PartitionName=compute Nodes=$serverName Default=Yes MaxTime=INFINITE State=UP" >> /opt/slurm/etc/slurm.conf
+   echo "PartitionName=control Nodes=$serverName Default=Yes MaxTime=INFINITE State=UP" >> /opt/slurm/etc/slurm.conf
    echo -n "PartitionName=compute Nodes=" >> /opt/slurm/etc/slurm.conf
    for (( i=0; i<$computeNumber; i=i+1)); do
      echo -n "${computeName[$i]}," >> /opt/slurm/etc/slurm.conf
@@ -184,8 +183,8 @@ JobCompType=jobcomp/none
       scp -r /opt/slurm/etc slurm@${computeName[$i]}:/opt/slurm/
       scp -r /etc/munge/munge.key munge@${computeName[$i]}:/etc/munge/
    done
-   /opt/slurm/sbin/slurmctld -c
-   /opt/slurm/sbin/slurmd -c
+   #/opt/slurm/sbin/slurmctld -c
+   #/opt/slurm/sbin/slurmd -c
    apt install nfs-kernel-server -y
    mkdir -p /home/share
    chown nobody:nogroup /home/share
@@ -204,7 +203,6 @@ JobCompType=jobcomp/none
 #启动控制节点slurm
 /opt/slurm/sbin/slurmd -c
    " >> /etc/slurmstart.sh
-   echo "equal"
 else
    read -p "请输入控制节点名称:" serverName
    read -p "请输入控制节点IP:" serverIP
